@@ -17,7 +17,7 @@ pipeline {
                         sh 'chmod +x build.sh' // Assuming build.sh exists
                         sh './build.sh'
                         sh 'deploy.sh devchanged'
-                        echo "{enc.BRANCHNAME}"
+                        echo "checking: {env.BRANCHNAME}"
                     } else if (env.BRANCH_NAME == 'main' && env.CHANGE_TARGET == 'main') {
                         sh 'chmod +x build.sh' // Assuming build.sh exists
                         sh './build.sh'
