@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 # Docker Hub username
 DOCKER_USERNAME="cjayanth"
 
@@ -13,12 +12,14 @@ docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_ACCESS_TOKEN}"
 # Check the argument passed
 if [[ "$1" == "devchanged" ]]; then
     echo "Tagging and pushing image to dev repository..."
-    docker tag nginx:latest dev:latest
-    docker push dev:latest
+    # Assuming react${IMAGE_COUNT} is the image name
+    docker tag react${IMAGE_COUNT}:latest "${DOCKER_USERNAME}/dev:latest"
+    docker push "${DOCKER_USERNAME}/dev:latest"
 elif [[ "$1" == "devmergedmaster" ]]; then
     echo "Tagging and pushing image to prod repository..."
-    docker tag nginx:latest prod:latest
-    docker push nginx:latest
+    # Assuming react${IMAGE_COUNT} is the image name
+    docker tag react${IMAGE_COUNT}:latest "${DOCKER_USERNAME}/prod:latest"
+    docker push "${DOCKER_USERNAME}/prod:latest"
 else
     echo "Invalid argument. Please provide either 'devchanged' or 'devmergedmaster'."
     exit 1
