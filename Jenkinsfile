@@ -15,9 +15,9 @@ pipeline {
                     echo "Branch Name: ${env.BRANCH_NAME}"
                     if (env.BRANCH_NAME == 'master') {
                         sh 'chmod +x build.sh' // Assuming build.sh exists
-                        sh './build.sh'
+                        def buildOutput = sh(script: './build.sh', returnStdout: true)
+                        echo "${buildOutput}"
                         sh 'deploy.sh devchanged'
-                        echo "checking: {env.BRANCHNAME}"
                     } else if (env.BRANCH_NAME == 'main' && env.CHANGE_TARGET == 'main') {
                         sh 'chmod +x build.sh' // Assuming build.sh exists
                         sh './build.sh'
