@@ -1,6 +1,15 @@
 #!/bin/bash
 
 
+# Docker Hub username
+DOCKER_USERNAME="cjayanth"
+
+# Docker Hub access token
+DOCKER_ACCESS_TOKEN="dckr_pat_G-VP6hpzdsyNUmpS3gLwKUEyk4A"
+
+# Log in to Docker Hub using access token
+docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_ACCESS_TOKEN}"
+
 # Check the argument passed
 if [[ "$1" == "devchanged" ]]; then
     echo "Tagging and pushing image to dev repository..."
