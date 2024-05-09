@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # Check the argument passed
 if [[ "$1" == "devchanged" ]]; then
     echo "Tagging and pushing image to dev repository..."
