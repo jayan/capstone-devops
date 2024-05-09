@@ -17,12 +17,13 @@ pipeline {
                         sh 'chmod +x build.sh' // Assuming build.sh exists
                         def buildOutput = sh(script: './build.sh', returnStdout: true)
                         echo "${buildOutput}"
-                        sh 'chmod 777' deploy.sh'
-                        sh 'deploy.sh devchanged'
+                        sh 'chmod +x deploy.sh'
+                        sh './deploy.sh devchanged'
                     } else if (env.BRANCH_NAME == 'main' && env.CHANGE_TARGET == 'main') {
                         sh 'chmod +x build.sh' // Assuming build.sh exists
                         sh './build.sh'
-                        sh 'deploy.sh devmergedmaster'
+                        sh 'chmod +x deploy.sh'
+                        sh './deploy.sh devmergedmaster'
                     } else {
                         echo "Skipping build - Branch: ${env.BRANCH_NAME}"
                     }
