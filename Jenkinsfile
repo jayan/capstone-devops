@@ -13,7 +13,8 @@ pipeline {
             steps {
                 script {
                     echo "Branch Name: ${env.BRANCH_NAME}"
-                    sh 'docker login -u cjayanth -p dckr_pat_IXH3dJctNsYfRzh2aVy_RN9-ftg'
+                    def login = sh ('docker login -u cjayanth -p dckr_pat_IXH3dJctNsYfRzh2aVy_RN9-ftg')
+                    echo "${login}"
                     if (env.BRANCH_NAME == 'master') {
                         sh 'chmod +x build.sh' // Assuming build.sh exists
                         def buildOutput = sh(script: './build.sh', returnStdout: true)
@@ -33,3 +34,4 @@ pipeline {
         }
     }
 }
+
