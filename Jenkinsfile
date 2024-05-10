@@ -24,6 +24,7 @@ pipeline {
                         sh "./deploy.sh devchanged ${imageCount}" // Pass only the image count
                     } else if (env.BRANCH_NAME == 'main' && env.PULL_REQUEST != null) {
                         if (env.MERGED_BRANCH_NAME == 'master') {
+                            echo "hloo"
                             sh 'chmod +x build.sh'
                             def buildOutput = sh(script: './build.sh', returnStdout: true).trim()
                             def imageCount = buildOutput.tokenize(':').last()  // Extract the image count
