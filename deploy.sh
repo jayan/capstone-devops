@@ -7,13 +7,13 @@ DOCKER_USERNAME="cjayanth"
 if [[ "$1" == "devchanged" ]]; then
     echo "Tagging and pushing image to dev repository..."
     IMAGE_COUNT="$2"  # Use the count passed as an argument
-    docker tag "react:${IMAGE_COUNT}" "${DOCKER_USERNAME}/dev:${IMAGE_COUNT}"
-    docker push "${DOCKER_USERNAME}/dev:${IMAGE_COUNT}"
+    docker tag "react:${IMAGE_COUNT}" "${DOCKER_USERNAME}/dev:Latest${IMAGE_COUNT}"
+    docker push "${DOCKER_USERNAME}/dev:Latest${IMAGE_COUNT}"
 elif [[ "$1" == "devmergedmaster" ]]; then
     echo "Tagging and pushing image to prod repository..."
     IMAGE_COUNT="$2"  # Use the count passed as an argument
-    docker tag "react:${IMAGE_COUNT}" "${DOCKER_USERNAME}/prod:${IMAGE_COUNT}"
-    docker push "${DOCKER_USERNAME}/prod:${IMAGE_COUNT}"
+    docker tag "react:${IMAGE_COUNT}" "${DOCKER_USERNAME}/prod:Latest${IMAGE_COUNT}"
+    docker push "${DOCKER_USERNAME}/prod:Latest${IMAGE_COUNT}"
 else
     echo "Invalid argument. Please provide either 'devchanged' or 'devmergedmaster'."
     exit 1
