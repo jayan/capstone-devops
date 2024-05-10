@@ -10,6 +10,10 @@ pipeline {
             }
         }
         stage('Build and Push (Conditional)') {
+            when {
+                // Trigger the stage when the branch is 'master' or it's a pull request targeting 'main'
+                expression { env.BRANCH_NAME == 'master' || (env.BRANCH_NAME == 'main' && env.PULL_REQUEST != null) }
+            }
             steps {
                 script {
                     echo "Branch Name: ${env.BRANCH_NAME}"
@@ -22,15 +26,15 @@ pipeline {
                         echo "Image count: ${imageCount}"
                         sh 'chmod +x deploy.sh'
                         sh "./deploy.sh devchanged ${imageCount}" // Pass only the image count
-                    } else if (env.BRANCH_NAME == 'main' && env.PULL_REQUEST != null) {
+                    } else {
+                        // For pull requests targeting 'main'
                         def sourceBranch = env.CHANGE_BRANCH
                         echo "Source branch for merge: ${sourceBranch}"
                         // Your build and deploy logic here (optional)
-                    } else {
-                        echo "Skipping build - Branch: ${env.BRANCH_NAME}"
                     }
                 }
             }
         }
     }
 }
+
