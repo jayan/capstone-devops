@@ -24,12 +24,8 @@ pipeline {
                         sh "./deploy.sh devchanged ${imageCount}" // Pass only the image count
                     } else if (env.BRANCH_NAME == 'main' && env.PULL_REQUEST != null) {
                         def sourceBranch = env.CHANGE_BRANCH
-                        if (sourceBranch == 'master') {
-                            echo "Source branch for merge: master"
-                            // Your build and deploy logic here
-                        } else {
-                            echo "Skipping build - Branch: ${env.BRANCH_NAME} (not from master merge)"
-                        }
+                        echo "Source branch for merge: ${sourceBranch}"
+                        // Your build and deploy logic here (optional)
                     } else {
                         echo "Skipping build - Branch: ${env.BRANCH_NAME}"
                     }
