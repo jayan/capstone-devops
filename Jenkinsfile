@@ -13,19 +13,18 @@ pipeline {
             steps {
                 script {
                     echo "Branch Name: ${env.BRANCH_NAME}"
-                    def login = sh ('docker login -u cjayanth -p dckr_pat_IXH3dJctNsYfRzh2aVy_RN9-ftg')
-                    echo "${login}"
                     if (env.BRANCH_NAME == 'master') {
-                        sh 'chmod +x build.sh' // Assuming build.sh exists
-                        def buildOutput = sh(script: './build.sh', returnStdout: true)
+                        sh 'chmod +x build.sh'
+                        def buildOutput = sh(script: './build.sh', returnStdout: true).trim()
                         echo "${buildOutput}"
                         sh 'chmod +x deploy.sh'
-                        sh './deploy.sh devchanged'
+                        sh "./deploy.sh devchanged ${buildOutput}"
                     } else if (env.BRANCH_NAME == 'main' && env.CHANGE_TARGET == 'main') {
-                        sh 'chmod +x build.sh' // Assuming build.sh exists
-                        sh './build.sh'
+                        sh 'chmod +x build.sh'
+                        def buildOutput = sh(script: './build.sh', returnStdout: true).trim()
+                        echo "${buildOutput}"
                         sh 'chmod +x deploy.sh'
-                        sh './deploy.sh devmergedmaster'
+                        sh "./deploy.sh devmergedmaster ${buildOutput}"
                     } else {
                         echo "Skipping build - Branch: ${env.BRANCH_NAME}"
                     }
