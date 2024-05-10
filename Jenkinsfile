@@ -16,15 +16,17 @@ pipeline {
                     if (env.BRANCH_NAME == 'master') {
                         sh 'chmod +x build.sh'
                         def buildOutput = sh(script: './build.sh', returnStdout: true).trim()
-                        echo "${buildOutput}"
+                        def imageCount = buildOutput.tokenize(':').last()  // Extract the image count
+                        echo "Image count: ${imageCount}"
                         sh 'chmod +x deploy.sh'
-                        sh "./deploy.sh devchanged ${buildOutput}"
+                        sh "./deploy.sh devchanged ${imageCount}" // Pass only the image count
                     } else if (env.BRANCH_NAME == 'main' && env.CHANGE_TARGET == 'main') {
                         sh 'chmod +x build.sh'
                         def buildOutput = sh(script: './build.sh', returnStdout: true).trim()
-                        echo "${buildOutput}"
+                        def imageCount = buildOutput.tokenize(':').last()  // Extract the image count
+                        echo "Image count: ${imageCount}"
                         sh 'chmod +x deploy.sh'
-                        sh "./deploy.sh devmergedmaster ${buildOutput}"
+                        sh "./deploy.sh devmergedmaster ${imageCount}" // Pass only the image count
                     } else {
                         echo "Skipping build - Branch: ${env.BRANCH_NAME}"
                     }
@@ -33,4 +35,3 @@ pipeline {
         }
     }
 }
-
