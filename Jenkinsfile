@@ -22,7 +22,7 @@ pipeline {
                         sh "./deploy.sh devchanged ${imageCount}" // Pass only the image count
                     } else if (env.BRANCH_NAME == 'main') {
                         def logOutput = sh(script: 'git log --pretty=%B -1', returnStdout: true)
-                        if (logOutput.trim().contains('Merge pull request')) {
+                        if (logOutput.trim().contains('Merge')) {
                             def mergedBranch = logOutput.trim().split('from ')[1].split(' ')[0]
                             if (mergedBranch == 'master') {
                                 sh 'chmod +x build.sh'
