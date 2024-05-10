@@ -22,24 +22,18 @@ pipeline {
                         echo "Image count: ${imageCount}"
                         sh 'chmod +x deploy.sh'
                         sh "./deploy.sh devchanged ${imageCount}" // Pass only the image count
-                    } else if (env.BRANCH_NAME == 'main') {
-                        def logOutput = sh(script: 'git log --pretty=%B -1', returnStdout: true)
-                        if (logOutput.trim().contains('Merge')) {
-                            def mergedBranch = logOutput.trim().split('from ')[1].split(' ')[0]
-                            if (mergedBranch == 'master') {
-                                sh 'chmod +x build.sh'
-                                def buildOutput = sh(script: './build.sh', returnStdout: true).trim()
-                                def imageCount = buildOutput.tokenize(':').last()  // Extract the image count
-                                echo "Image count: ${imageCount}"
-                                sh 'chmod +x deploy.sh'
-                                def login = sh("docker login -u cjayanth -p dckr_pat_b7SY8aUaMHV1wGURqY4jQoukKNI")
-                                echo "${login}"
-                                sh "./deploy.sh devmergedmaster ${imageCount}" // Pass only the image count
-                            } else {
-                                echo "Skipping build - Branch: ${env.BRANCH_NAME} (not from master merge)"
-                            }
+                    } else if (env.BRANCH_NAME == 'main' && env.PULL_REQUEST != null) {
+                        if (env.MERGED_BRANCH_NAME == 'master') {
+                            sh 'chmod +x build.sh'
+                            def buildOutput = sh(script: './build.sh', returnStdout: true).trim()
+                            def imageCount = buildOutput.tokenize(':').last()  // Extract the image count
+                            echo "Image count: ${imageCount}"
+                            sh 'chmod +x deploy.sh'
+                            def login = sh("docker login -u cjayanth -p dckr_pat_b7SY8aUaMHV1wGURqY4jQoukKNI")
+                            echo "${login}"
+                            sh "./deploy.sh devmergedmaster ${imageCount}" // Pass only the image count
                         } else {
-                            echo "Skipping build - Branch: ${env.BRANCH_NAME} (not a merge)"
+                            echo "Skipping build - Branch: ${env.BRANCH_NAME} (not from master merge)"
                         }
                     } else {
                         echo "Skipping build - Branch: ${env.BRANCH_NAME}"
