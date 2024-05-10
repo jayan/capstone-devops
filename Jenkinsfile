@@ -25,15 +25,8 @@ pipeline {
                     } else if (env.BRANCH_NAME == 'main' && env.PULL_REQUEST != null) {
                         def sourceBranch = env.CHANGE_BRANCH
                         if (sourceBranch == 'master') {
-                            // Run build and deploy for main branch after merge from master
-                            sh 'chmod +x build.sh'
-                            def buildOutput = sh(script: './build.sh', returnStdout: true).trim()
-                            def imageCount = buildOutput.tokenize(':').last()  // Extract the image count
-                            echo "Image count: ${imageCount}"
-                            sh 'chmod +x deploy.sh'
-                            def login = sh("docker login -u cjayanth -p dckr_pat_b7SY8aUaMHV1wGURqY4jQoukKNI")
-                            echo "${login}"
-                            sh "./deploy.sh devmergedmaster ${imageCount}" // Pass only the image count
+                            echo "Source branch for merge: master"
+                            // Your build and deploy logic here
                         } else {
                             echo "Skipping build - Branch: ${env.BRANCH_NAME} (not from master merge)"
                         }
