@@ -22,8 +22,10 @@ pipeline {
                         echo "Image count: ${imageCount}"
                         sh 'chmod +x deploy.sh'
                         sh "./deploy.sh devchanged ${imageCount}" // Pass only the image count
-                    } else if (env.BRANCH_NAME == 'main' && env.PULL_REQUEST != null) {
-                        if (env.MERGED_BRANCH_NAME == 'master') {
+                    } else if (env.BRANCH_NAME == 'main' && env.CHANGE_TARGET == 'main') {
+                        // Check if the pull request is merged from master to main
+                        if (env.CHANGE_ID && env.CHANGE_TARGET && env.CHANGE_TARGET == 'main') {
+                            // Run build and deploy for main branch after merge from master
                             sh 'chmod +x build.sh'
                             def buildOutput = sh(script: './build.sh', returnStdout: true).trim()
                             def imageCount = buildOutput.tokenize(':').last()  // Extract the image count
@@ -43,4 +45,3 @@ pipeline {
         }
     }
 }
-
