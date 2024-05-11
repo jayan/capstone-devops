@@ -1,8 +1,6 @@
-version: '3.8'
-
+version: '3'
 services:
-  my_service:
-    image: nginx
+  app:
+    image: ${IMAGE_NAME}
     ports:
-      - "80:80"
-
+      - "80:80"  
